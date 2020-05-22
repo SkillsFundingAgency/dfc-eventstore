@@ -23,8 +23,11 @@ namespace DFC.EventStore.Function
         {
             try
             {
-                log.LogInformation($"Request received: {eventGridEvent}");
-                await _eventstoreRepository.CreateAsync(eventGridEvent);
+                if (eventGridEvent != null)
+                {
+                    log.LogInformation($"Request received: {eventGridEvent}");
+                    await _eventstoreRepository.CreateAsync(eventGridEvent);
+                }
             }
 
             catch (Exception e)

@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
+using DFC.Eventstore.Data.Contracts;
 using DFC.EventStore.Function;
 using FakeItEasy;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid.Models;
+using Microsoft.Azure.EventGrid;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -15,31 +16,52 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
     {
         private readonly Execute _executeFunction;
         private readonly ILogger _log;
-        private readonly HttpRequest _request;
+        private readonly ICosmosRepository<EventStoreModel> _eventStoreRepository;
 
         public ExecuteEventGridTriggerTests()
         {
             _log = A.Fake<ILogger>();
+            _eventStoreRepository = A.Fake<ICosmosRepository<EventStoreModel>>();
+            _executeFunction = new Execute(_eventStoreRepository);
         }
 
         [Fact]
-        public void ExecuteEventGridTrigger_WhenPassedEvent_StoresEventSuccessfully()
+        public async Task ExecuteEventGridTrigger_WhenPassedEvent_StoresEventSuccessfully()
         {
             //Arrange
-
             var eventStoreModel = new EventStoreModel()
             {
-
+                Data = "Some data...",
+                DataVersion = "1.0.0",
+                EventTime = DateTime.UtcNow,
+                Id = Guid.NewGuid().ToString(),
+                EventType = EventTypes.StorageBlobCreatedEvent,
+                Subject = "My Test Subject",
+                Topic = "My/Topic/Test"
             };
 
             //Act
+            await RunFunction(eventStoreModel);
 
             //Assert
+            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
-        private async Task<IActionResult> RunFunction(EventStoreModel eventStoreModel)
+        [Fact]
+        public async Task ExecuteEventGridTrigger_WhenPassedNullEvent_DoesNotStoreEvent()
         {
-            return await _executeFunction.Run(eventStoreModel, _log).ConfigureAwait(false);
+            //Arrange
+           
+            //Act
+            await RunFunction(null);
+
+            //Assert
+            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).MustNotHaveHappened();
+        }
+
+        private async Task RunFunction(EventStoreModel eventStoreModel)
+        {
+           await _executeFunction.Run(eventStoreModel, _log).ConfigureAwait(false);
         }
     }
 }
