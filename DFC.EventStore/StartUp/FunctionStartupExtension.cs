@@ -7,6 +7,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
@@ -21,10 +22,12 @@ namespace DFC.ServiceTaxonomy.ApiFunction.StartUp
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.development.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 

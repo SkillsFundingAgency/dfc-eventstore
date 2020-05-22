@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DFC.Eventstore.Data.Contracts;
 using DFC.App.EventStore.Data.Models;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DFC.EventStore.Function
 {
