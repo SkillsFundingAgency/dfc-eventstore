@@ -1,20 +1,48 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AzureFunctionsVersion>
-    </AzureFunctionsVersion>
-    <ProjectGuid>{D022647C-9A8C-4DF1-93BE-F2F0F10E5EB6}</ProjectGuid>
+    <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ProjectGuid>{3eba975f-8dfb-4a1b-88c5-1a6588c1466c}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
+    <None Remove="appsettings-template.json" />
+    <None Remove="appsettings.development.json" />
+    <None Remove="appsettings.json" />
+    <None Remove="function.json" />
+    <None Remove="host.json" />
+    <None Remove="local.settings.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="host.json">
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="2.1.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.6.0.16497">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.Eventstore.Data\DFC.App.EventStore.Data.csproj" />
+    <ProjectReference Include="..\DFC.Eventstore.Repository.CosmosDb\DFC.Eventstore.Repository.CosmosDb.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="function.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
+    </Content>
+   
   </ItemGroup>
 </Project>
