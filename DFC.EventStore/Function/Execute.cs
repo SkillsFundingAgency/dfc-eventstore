@@ -33,6 +33,7 @@ namespace DFC.EventStore.Function
             catch (Exception e)
             {
                 log.LogError(e, $"Error occured in {nameof(Execute)}");
+                throw;
             }
         }
     }

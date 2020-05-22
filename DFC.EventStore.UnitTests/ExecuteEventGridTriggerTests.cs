@@ -48,6 +48,29 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
         }
 
         [Fact]
+        public async Task ExecuteEventGridTrigger_ThrowsException_ExceptionCaught()
+        {
+            //Arrange
+            var eventStoreModel = new EventStoreModel()
+            {
+                Data = "Some data...",
+                DataVersion = "1.0.0",
+                EventTime = DateTime.UtcNow,
+                Id = Guid.NewGuid().ToString(),
+                EventType = EventTypes.StorageBlobCreatedEvent,
+                Subject = "My Test Subject",
+                Topic = "My/Topic/Test"
+            };
+
+            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).Throws(new InvalidOperationException("Something went wrong"));
+
+            //Act
+
+            //Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await RunFunction(eventStoreModel));
+        }
+
+        [Fact]
         public async Task ExecuteEventGridTrigger_WhenPassedNullEvent_DoesNotStoreEvent()
         {
             //Arrange
