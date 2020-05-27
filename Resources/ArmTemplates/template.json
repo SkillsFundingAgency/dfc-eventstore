@@ -54,10 +54,10 @@
             "type": "string",
             "defaultValue": ""
         },
-        "eventstoreAppDatabaseNeedsCreation": {
+        "eventstoreDatabaseNeedsCreation": {
             "type": "bool"
         },
-        "eventstoreAppDatabaseThroughput": {
+        "eventstoreDatabaseThroughput": {
             "type": "int"
         }
     },
@@ -150,7 +150,10 @@
                         "value": "functionapp"
                     },
                     "deployStagingSlot": {
-                        "value": false
+                        "value": true
+                    },
+                    "clientAffinity": {
+                        "value": true
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -159,7 +162,15 @@
                                 "value": "~3"
                             },
                             {
+                                "name": "FUNCTIONS_WORKER_RUNTIME",
+                                "value": "dotnet"
+                            },
+                            {
                                 "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                                "value": "1"
+                            },
+                            {
+                                "name": "WEBSITE_RUN_FROM_PACKAGE",
                                 "value": "1"
                             },
                             {
@@ -224,10 +235,10 @@
                         "value": true
                     },
                     "offerThroughput": {
-                        "value": "[parameters('EventStoreAppDatabaseThroughput')]"
+                        "value": "[parameters('EventStoreDatabaseThroughput')]"
                     },
                     "databaseNeedsCreation": {
-                        "value": "[parameters('EventStoreAppDatabaseNeedsCreation')]"
+                        "value": "[parameters('EventStoreDatabaseNeedsCreation')]"
                     }
                 }
             }

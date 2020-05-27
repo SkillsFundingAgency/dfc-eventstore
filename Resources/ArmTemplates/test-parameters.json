@@ -29,10 +29,10 @@
         "CosmosDbResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
         },
-        "eventstoreAppDatabaseNeedsCreation": {
+        "eventstoreDatabaseNeedsCreation": {
             "value": true
         },
-        "eventstoreAppDatabaseThroughput": {
+        "eventstoreDatabaseThroughput": {
             "value": 2
         }
     }
