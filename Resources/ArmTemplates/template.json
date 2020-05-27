@@ -54,10 +54,10 @@
             "type": "string",
             "defaultValue": ""
         },
-        "eventstoreAppDatabaseNeedsCreation": {
+        "eventstoreDatabaseNeedsCreation": {
             "type": "bool"
         },
-        "eventstoreAppDatabaseThroughput": {
+        "eventstoreDatabaseThroughput": {
             "type": "int"
         }
     },
@@ -224,10 +224,10 @@
                         "value": true
                     },
                     "offerThroughput": {
-                        "value": "[parameters('EventStoreAppDatabaseThroughput')]"
+                        "value": "[parameters('EventStoreDatabaseThroughput')]"
                     },
                     "databaseNeedsCreation": {
-                        "value": "[parameters('EventStoreAppDatabaseNeedsCreation')]"
+                        "value": "[parameters('EventStoreDatabaseNeedsCreation')]"
                     }
                 }
             }

@@ -14,6 +14,9 @@
         "aseResourceGroup": {
             "value": "__aseResourceGroup__"
         },
+        "aspTier": {
+            "value": "__aspTier__"
+        },
         "CosmosDbResourceGroup": {
             "value": "__appSharedResourceGroup__"
         },
@@ -38,10 +41,10 @@
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
         },
-        "eventstoreAppDatabaseNeedsCreation": {
+        "eventstoreDatabaseNeedsCreation": {
             "value": __CosmosDbAppDatabaseDoesntExist__
         },
-        "eventstoreAppDatabaseThroughput": {
+        "eventstoreDatabaseThroughput": {
             "value": __eventstoreAppDatabaseThroughput__
         }
     }
