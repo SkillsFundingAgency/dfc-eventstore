@@ -43,6 +43,6 @@
         },
         "eventstoreAppDatabaseThroughput": {
             "value": __eventstoreAppDatabaseThroughput__
-            }
         }
     }
+}
