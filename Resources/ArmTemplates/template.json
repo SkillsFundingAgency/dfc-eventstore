@@ -150,7 +150,10 @@
                         "value": "functionapp"
                     },
                     "deployStagingSlot": {
-                        "value": false
+                        "value": true
+                    },
+                    "clientAffinity": {
+                        "value": true
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -159,7 +162,15 @@
                                 "value": "~3"
                             },
                             {
+                                "name": "FUNCTIONS_WORKER_RUNTIME",
+                                "value": "dotnet"
+                            },
+                            {
                                 "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                                "value": "1"
+                            },
+                            {
+                                "name": "WEBSITE_RUN_FROM_PACKAGE",
                                 "value": "1"
                             },
                             {
