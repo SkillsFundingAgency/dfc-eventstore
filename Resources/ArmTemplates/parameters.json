@@ -42,10 +42,10 @@
             "value": "__cosmosDbCollectionName__"
         },
         "eventstoreDatabaseNeedsCreation": {
-            "value": __CosmosDbAppDatabaseDoesntExist__
+            "value": __CosmosDbDatabaseDoesntExist__
         },
         "eventstoreDatabaseThroughput": {
-            "value": __eventstoreAppDatabaseThroughput__
+            "value": __eventstoreDatabaseThroughput__
         }
     }
 }
