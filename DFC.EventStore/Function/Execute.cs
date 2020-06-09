@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DFC.Eventstore.Data.Contracts;
 using DFC.App.EventStore.Data.Models;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
+using Newtonsoft.Json;
 
 namespace DFC.EventStore.Function
 {
@@ -25,7 +26,7 @@ namespace DFC.EventStore.Function
             {
                 if (eventGridEvent != null)
                 {
-                    log.LogInformation($"Request received: {eventGridEvent}");
+                    log.LogInformation($"Request received: {JsonConvert.SerializeObject(eventGridEvent)}");
                     await _eventstoreRepository.CreateAsync(eventGridEvent);
                 }
             }
