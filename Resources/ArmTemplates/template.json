@@ -61,17 +61,17 @@
             "type": "int"
         }
     },
-    "variables": {
-        "appServicePlanName": "[if(greater(length(parameters('sharedAppServicePlanName')), 0), parameters('sharedAppServicePlanName'), concat(variables('resourcePrefix'), '-asp'))]",
-        "appServicePlanResourceGroup": "[if(greater(length(parameters('SharedAppServicePlanResourceGroup')), 0), parameters('SharedAppServicePlanResourceGroup'), resourceGroup().name)]",
-        "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
-        "cosmosDbCollectionPartitionKey": "/EventType",
-        "cosmosDbDatabaseName": "dfc-eventstore",
-        "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
-        "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
-        "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
-    },
+  "variables": {
+    "appServicePlanName": "[if(greater(length(parameters('sharedAppServicePlanName')), 0), parameters('sharedAppServicePlanName'), concat(variables('resourcePrefix'), '-asp'))]",
+    "appServicePlanResourceGroup": "[if(greater(length(parameters('SharedAppServicePlanResourceGroup')), 0), parameters('SharedAppServicePlanResourceGroup'), resourceGroup().name)]",
+    "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
+    "cosmosDbCollectionPartitionKey": "/eventType",
+    "cosmosDbDatabaseName": "dfc-eventstore",
+    "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
+    "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
+    "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
+    "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+  },
     "resources": [
         {
             "apiVersion": "2017-05-10",
