@@ -34,8 +34,9 @@ namespace DFC.Eventstore.Repository.CosmosDb
             if (env.IsDevelopment())
             {
                 await CreateDatabaseIfNotExistsAsync().ConfigureAwait(false);
-                await CreateCollectionIfNotExistsAsync().ConfigureAwait(false);
             }
+
+            await CreateCollectionIfNotExistsAsync().ConfigureAwait(false);
         }
 
         public async Task<HttpStatusCode> CreateAsync(T model)
