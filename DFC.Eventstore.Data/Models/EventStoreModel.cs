@@ -25,6 +25,7 @@ namespace DFC.App.EventStore.Data.Models
         public string? MetadataVersion { get; }
         [JsonProperty(PropertyName = "dataVersion")]
         public string? DataVersion { get; set; }
+        [JsonProperty(PropertyName = "_etag")]
         public string? Etag { get; set; }
         public string? PartitionKey { get; set; }
     }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using DFC.Compui.Cosmos.Contracts;
+using System.Diagnostics;
 
 namespace DFC.EventStore.Function
 {
@@ -25,6 +26,11 @@ namespace DFC.EventStore.Function
             {
                 if (eventGridEvent != null)
                 {
+                    if(Activity.Current == null)
+                    {
+                        Activity.Current = new Activity("EventStoreExecute").Start();
+                    }
+
                     log.LogInformation($"Request received: {eventGridEvent}");
 
                     eventGridEvent.PartitionKey = eventGridEvent.EventType;
