@@ -1,12 +1,12 @@
 ﻿using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Telemetry.Models;
-using DFC.Eventstore.Data.Models;
-using Microsoft.Azure.EventGrid.Models;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.EventStore.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class EventStoreModel : RequestTrace, IDocumentModel
     {
         [JsonProperty(PropertyName = "id")]
