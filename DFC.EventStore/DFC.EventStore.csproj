@@ -12,7 +12,6 @@
     <None Remove="appsettings.json" />
     <None Remove="function.json" />
     <None Remove="host.json" />
-    <None Remove="local.settings.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.55" />
@@ -44,5 +43,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
    
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

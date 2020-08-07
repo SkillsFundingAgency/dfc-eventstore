@@ -27,6 +27,7 @@ namespace DFC.EventStore.Function
                 {
                     log.LogInformation($"Request received: {eventGridEvent}");
 
+                    eventGridEvent.PartitionKey = eventGridEvent.EventType;
                     await _eventstoreRepository.UpsertAsync(eventGridEvent);
                 }
             }
