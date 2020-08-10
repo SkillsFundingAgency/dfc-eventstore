@@ -1,12 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
-using DFC.Eventstore.Data.Contracts;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.EventStore.Function;
 using FakeItEasy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
-using Microsoft.Extensions.Logging;
 using Xunit;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -16,12 +14,12 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
     {
         private readonly Execute _executeFunction;
         private readonly ILogger _log;
-        private readonly ICosmosRepository<EventStoreModel> _eventStoreRepository;
+        private readonly IDocumentService<EventStoreModel> _eventStoreRepository;
 
         public ExecuteEventGridTriggerTests()
         {
             _log = A.Fake<ILogger>();
-            _eventStoreRepository = A.Fake<ICosmosRepository<EventStoreModel>>();
+            _eventStoreRepository = A.Fake<IDocumentService<EventStoreModel>>();
             _executeFunction = new Execute(_eventStoreRepository);
         }
 
@@ -34,7 +32,7 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
                 Data = "Some data...",
                 DataVersion = "1.0.0",
                 EventTime = DateTime.UtcNow,
-                Id = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
                 EventType = EventTypes.StorageBlobCreatedEvent,
                 Subject = "My Test Subject",
                 Topic = "My/Topic/Test"
@@ -44,7 +42,7 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
             await RunFunction(eventStoreModel);
 
             //Assert
-            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _eventStoreRepository.UpsertAsync(A<EventStoreModel>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -56,13 +54,13 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
                 Data = "Some data...",
                 DataVersion = "1.0.0",
                 EventTime = DateTime.UtcNow,
-                Id = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
                 EventType = EventTypes.StorageBlobCreatedEvent,
                 Subject = "My Test Subject",
                 Topic = "My/Topic/Test"
             };
 
-            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).Throws(new InvalidOperationException("Something went wrong"));
+            A.CallTo(() => _eventStoreRepository.UpsertAsync(A<EventStoreModel>.Ignored)).Throws(new InvalidOperationException("Something went wrong"));
 
             //Act
 
@@ -79,7 +77,7 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
             await RunFunction(null);
 
             //Assert
-            A.CallTo(() => _eventStoreRepository.CreateAsync(A<EventStoreModel>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _eventStoreRepository.UpsertAsync(A<EventStoreModel>.Ignored)).MustNotHaveHappened();
         }
 
         private async Task RunFunction(EventStoreModel eventStoreModel)

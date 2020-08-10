@@ -12,9 +12,9 @@
     <None Remove="appsettings.json" />
     <None Remove="function.json" />
     <None Remove="host.json" />
-    <None Remove="local.settings.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.55" />
     <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="2.1.0" />
@@ -34,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DFC.Eventstore.Data\DFC.App.EventStore.Data.csproj" />
-    <ProjectReference Include="..\DFC.Eventstore.Repository.CosmosDb\DFC.Eventstore.Repository.CosmosDb.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="function.json">
@@ -44,5 +43,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
    
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

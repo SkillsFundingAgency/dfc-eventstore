@@ -2,18 +2,18 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using DFC.Eventstore.Data.Contracts;
 using DFC.App.EventStore.Data.Models;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Newtonsoft.Json;
+using DFC.Compui.Cosmos.Contracts;
+using System.Diagnostics;
 
 namespace DFC.EventStore.Function
 {
     public class Execute
     {
-        private readonly ICosmosRepository<EventStoreModel> _eventstoreRepository;
+        private readonly IDocumentService<EventStoreModel> _eventstoreRepository;
 
-        public Execute(ICosmosRepository<EventStoreModel> eventstoreRepository)
+        public Execute(IDocumentService<EventStoreModel> eventstoreRepository)
         {
             _eventstoreRepository = eventstoreRepository ?? throw new ArgumentNullException(nameof(eventstoreRepository));
         }
@@ -26,8 +26,15 @@ namespace DFC.EventStore.Function
             {
                 if (eventGridEvent != null)
                 {
-                    log.LogInformation($"Request received: {JsonConvert.SerializeObject(eventGridEvent)}");
-                    await _eventstoreRepository.CreateAsync(eventGridEvent);
+                    if(Activity.Current == null)
+                    {
+                        Activity.Current = new Activity("EventStoreExecute").Start();
+                    }
+
+                    log.LogInformation($"Request received: {eventGridEvent}");
+
+                    eventGridEvent.PartitionKey = eventGridEvent.EventType;
+                    await _eventstoreRepository.UpsertAsync(eventGridEvent);
                 }
             }
 

@@ -1,6 +1,6 @@
 ﻿using DFC.App.EventStore.Data.Models;
-using DFC.Eventstore.Data.Contracts;
-using DFC.Eventstore.Repository.CosmosDb;
+using DFC.Compui.Cosmos;
+using DFC.Compui.Cosmos.Contracts;
 using DFC.ServiceTaxonomy.ApiFunction.StartUp;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -35,7 +35,7 @@ namespace DFC.ServiceTaxonomy.ApiFunction.StartUp
             var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
 
 
-            builder.Services.AddTransient<ICosmosRepository<EventStoreModel>, CosmosRepository<EventStoreModel>>();
+            builder.Services.AddDocumentServices<EventStoreModel>(cosmosDbConnection, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToUpperInvariant() == "DEVELOPMENT");
 
             builder.Services.AddSingleton(cosmosDbConnection);
             builder.Services.AddSingleton<IDocumentClient>(documentClient);

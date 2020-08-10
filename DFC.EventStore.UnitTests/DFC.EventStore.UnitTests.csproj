@@ -16,6 +16,7 @@
     <Content Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DFC.Compui.Cosmos" Version="1.0.55" />
     <PackageReference Include="FakeItEasy" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
