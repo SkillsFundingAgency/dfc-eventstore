@@ -23,6 +23,15 @@
         "sharedAppServicePlanResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
         },
+        "aspInstances": {
+            "value": 1
+        },
+        "aspTier": {
+            "value": "Standard"
+        },
+        "aspSize": {
+            "value": "2"
+        },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
         },
