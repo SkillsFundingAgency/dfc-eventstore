@@ -68,7 +68,7 @@
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
         "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]",
-        "EventGridTopicName": "[tolower(concat('dfc-', parameters('Environment'), '-stax-egt'))]",
+        "EventGridTopicName": "[tolower(concat(resourceGroup().id,'/dfc-', parameters('Environment'), '-stax-egt'))]",
         "eventGridSub": "[tolower(concat('dfc-eventstore'))]",
         "location": "[resourceGroup().location]"
     },
