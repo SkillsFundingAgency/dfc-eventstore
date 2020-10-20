@@ -67,9 +67,29 @@
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]",
+        "EventGridTopicName": "[tolower(concat('dfc-', parameters('Environment'), '-stax-egt'))]",
+        "eventGridSub": "[tolower(concat('dfc-eventstore'))]",
+        "location": "[resourceGroup().location]"
     },
     "resources": [
+        {
+            "name": "[concat(variables('EventGridTopicName'), '/Microsoft.EventGrid/', variables('eventGridSub'))]",
+            "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
+            "location": "[variables('location')]",
+            "apiVersion": "2020-01-01-preview",
+            "properties": {
+                "destination": {
+                    "endpointType": "AzureFunction",
+                    "properties": {
+                        "resourceId": "[resourceId('Microsoft.Web/sites/functions/', variables('functionAppName'), 'Execute')]"
+                    }
+                },
+                "filter": {
+                    "includedEventTypes": [ "" ]
+                }
+            }
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "[variables('appServicePlanName')]",
