@@ -69,7 +69,7 @@
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
         "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]",
         "EventGridNamee": "[tolower(concat('dfc-', parameters('Environment'), '-stax-egt'))]",
-        "EventGridTopicName": "[tolower(concat('/subscriptions/',subscription().id,'/resourcegroups/','dfc-', parameters('Environment'), '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridNamee')))]",
+        "EventGridTopicName": "[tolower(concat(subscription().id,'/resourcegroups/','dfc-', parameters('Environment'), '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridNamee')))]",
         "eventGridSub": "[tolower(concat('dfc-eventstore'))]",
         "location": "[resourceGroup().location]"
     },
