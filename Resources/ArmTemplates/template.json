@@ -77,7 +77,7 @@
     },
     "resources": [
         {
-            "name": "[variables('EventGridSubscriptionName')]",
+            "name": "[concat('/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourcegroups/dfc-dev-stax-editor-rg/providers/Microsoft.EventGrid/topics/',variables('EventGridTopicName'),'/providers/Microsoft.EventGrid/eventSubscriptions/',variables('EventGridSubscriptionName'))]",
             "type": "subscriptions/resourcegroups/providers/Microsoft.EventGrid/topics/providers/Microsoft.EventGrid/eventSubscriptions",
             "location": "[variables('location')]",
             "apiVersion": "2020-01-01-preview",
