@@ -14,18 +14,24 @@ The AKS service name
 
 [CmdletBinding()]
 param(
+    # [Parameter(Mandatory=$true)]
+    # [String]$EventGridSubscriptionName,
+    # [Parameter(Mandatory=$true)]
+    # [String]$SubscriptionId,
+    # [Parameter(Mandatory=$true)]
+    # [String]$TopicResourceGroup,
     [Parameter(Mandatory=$true)]
-    [String]$TopicResourceGroup,
+    [String]$FunctionAppResourceGroup,
     [Parameter(Mandatory=$true)]
-    [String]$SubscriptionId
+    [String]$FunctionApp
 )
 
 
 az extension add --name eventgrid
 
 az eventgrid event-subscription create `
---name dfc-eventstore `
---source-resource-id /subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/dfc-dev-stax-editor-rg/providers/Microsoft.EventGrid/topics/dfc-dev-stax-egt `
---endpoint /subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/dfc-dev-app-eventstore-rg/providers/Microsoft.Web/sites/dfc-dev-app-eventstore-fa/functions/Execute `
+--name $EventGridSubscriptionName `
+--source-resource-id '/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/dfc-dev-stax-editor-rg/providers/Microsoft.EventGrid/topics/dfc-dev-stax-egt' `
+--endpoint "/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourceGroups/$($FunctionAppResourceGroup)/providers/Microsoft.Web/sites/$($FunctionApp)/functions/Execute" `
 --endpoint-type azurefunction
 
