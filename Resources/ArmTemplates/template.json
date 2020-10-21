@@ -86,7 +86,8 @@
                 "destination": {
                     "endpointType": "AzureFunction",
                     "properties": {
-                        "resourceId": "[resourceId('Microsoft.Web/sites/functions/', variables('functionAppName'), 'Execute')]"
+                        // "resourceId": "[resourceId('Microsoft.Web/sites/functions/', variables('functionAppName'), 'Execute')]"
+                        "resourceId": "[concat('/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/sites/', variables('functionAppName'), '/functions/Execute')]"
                     }
                 },
                 "filter": {
