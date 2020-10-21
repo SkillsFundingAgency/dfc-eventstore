@@ -43,14 +43,6 @@
         "environment": {
             "type": "string"
         },
-        "sharedAppServicePlanName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "sharedAppServicePlanResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
-        },
         "eventstoreDatabaseNeedsCreation": {
             "type": "bool"
         },
@@ -67,33 +59,9 @@
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]",
-        // "EventGridTopicName": "[tolower(concat('dfc-', parameters('Environment'), '-stax-egt'))]",
-        "EventGridTopicName": "[tolower(concat('dfc-', 'dev', '-stax-egt'))]",
-        // "EventGridTopic": "[tolower(concat('/resourcegroups/','dfc-', parameters('Environment'), '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridTopicName')))]",
-        "EventGridTopic": "[tolower(concat('/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourcegroups/','dfc-','dev', '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridTopicName')))]",
-        "EventGridSubscriptionName": "[tolower(concat('dfc-eventstore'))]",
-        "location": "[resourceGroup().location]"
+       "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
     },
     "resources": [
-        {
-            "name": "[concat('/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourcegroups/dfc-dev-stax-editor-rg/providers/Microsoft.EventGrid/topics/',variables('EventGridTopicName'),'/Microsoft.EventGrid/',variables('EventGridSubscriptionName'))]",
-            "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
-            "location": "[variables('location')]",
-            "apiVersion": "2020-01-01-preview",
-            "properties": {
-                "topic": "[variables('EventGridTopic')]",
-                "destination": {
-                    "endpointType": "AzureFunction",
-                    "properties": {
-                        "resourceId": "[concat('/subscriptions/962cae10-2950-412a-93e3-d8ae92b17896/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/sites/', variables('functionAppName'), '/functions/Execute')]"
-                    }
-                },
-                "filter": {
-                    "includedEventTypes": [ "" ]
-                }
-            }
-        },
         {
             "apiVersion": "2017-05-10",
             "name": "[variables('appServicePlanName')]",
