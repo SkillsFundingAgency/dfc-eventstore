@@ -69,13 +69,14 @@
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
         "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]",
         "EventGridTopicName": "[tolower(concat('dfc-', parameters('Environment'), '-stax-egt'))]",
-        "EventGridTopic": "[tolower(concat('/resourcegroups/','dfc-', parameters('Environment'), '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridTopicName')))]",
+        // "EventGridTopic": "[tolower(concat('/resourcegroups/','dfc-', parameters('Environment'), '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridTopicName')))]",
+        "EventGridTopic": "[tolower(concat('/resourcegroups/','dfc-','dev', '-stax-editor-rg' , '/providers/Microsoft.EventGrid/topics/', variables('EventGridTopicName')))]",
         "EventGridSubscriptionName": "[tolower(concat('dfc-eventstore'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
         {
-            "name": "[concat(variables('EventGridTopic'), '/Microsoft.EventGrid/', variables('EventGridSubscriptionName'))]",
+            "name": "[concat(variables('EventGridTopicName'), '/Microsoft.EventGrid/', variables('EventGridSubscriptionName'))]",
             "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
             "location": "[variables('location')]",
             "apiVersion": "2020-01-01-preview",
