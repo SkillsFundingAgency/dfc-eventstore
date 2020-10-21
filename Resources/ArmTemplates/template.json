@@ -75,7 +75,7 @@
     },
     "resources": [
         {
-            "name": "[concat(variables('EventGridTopic'), '/Microsoft.EventGrid/', variables('EventGridSubscriptionName'))]",
+            "name": "[concat(variables('EventGridTopicName'), '/Microsoft.EventGrid/', variables('EventGridSubscriptionName'))]",
             "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
             "location": "[variables('location')]",
             "apiVersion": "2020-01-01-preview",
