@@ -3,9 +3,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using DFC.Compui.Cosmos.Contracts;
 using System.Diagnostics;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace DFC.EventStore.Function
 {
@@ -20,13 +23,18 @@ namespace DFC.EventStore.Function
 
         [FunctionName("Execute")]
         public async Task Run
-           ([EventGridTrigger] EventStoreModel eventGridEvent, ILogger log)
+           ([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Execute")] HttpRequest req,
+            ILogger log)
         {
             try
             {
+                var content = await new StreamReader(req.Body).ReadToEndAsync();
+
+                var eventGridEvent = JsonConvert.DeserializeObject<EventStoreModel>(content);
+
                 if (eventGridEvent != null)
                 {
-                    if(Activity.Current == null)
+                    if (Activity.Current == null)
                     {
                         Activity.Current = new Activity("EventStoreExecute").Start();
                     }

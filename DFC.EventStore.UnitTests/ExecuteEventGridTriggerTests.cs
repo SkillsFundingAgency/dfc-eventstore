@@ -1,10 +1,14 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.EventStore.Function;
 using FakeItEasy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Azure.EventGrid;
+using Newtonsoft.Json;
 using Xunit;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -82,7 +86,22 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
 
         private async Task RunFunction(EventStoreModel eventStoreModel)
         {
-           await _executeFunction.Run(eventStoreModel, _log).ConfigureAwait(false);
+            var ms = new MemoryStream();
+            var sw = new StreamWriter(ms);
+
+            var json = JsonConvert.SerializeObject(eventStoreModel);
+
+            sw.Write(json);
+            sw.Flush();
+
+            ms.Position = 0;
+
+            var request = new DefaultHttpRequest(new DefaultHttpContext())
+            {
+                Body = ms
+            };
+
+            await _executeFunction.Run(request, _log).ConfigureAwait(false);
         }
     }
 }

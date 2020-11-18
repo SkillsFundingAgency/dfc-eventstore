@@ -1,0 +1,61 @@
+﻿openapi: 3.0.1
+info:
+  title: Event Store API
+  description: 'Stores an Event Grid API Message'
+  version: 1.0.0
+servers:
+- url: __FunctionAppUrl__
+tags:
+- name: Event Store
+  description: Stores an Event Grid Event to Cosmos DB
+paths:
+  /api/Execute/:
+    post:
+      tags:
+      - Content
+      summary: Store an Event Grid Event.
+      requestBody:
+        description: The Event Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBody'
+        required: true
+      description: Store an Event Grid Event.
+      operationId: EventPost
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Missing data from body or parameters have not been supplied for query.
+          content: {}
+        404:
+          description: Resource not found
+          content: {}
+        422:
+          description: Unprocessable Entity - Unable to read/deserialize data.
+          content: {}
+        500:
+          description: Missing App Settings or Config Files.
+          content: {}
+components:
+  schemas:
+    RequestBody: 
+      type: object
+      properties:
+        topic:
+          type: string
+        subject:
+          type: string
+        eventType:
+          type: string
+        eventTime:
+          type: string
+        id:
+          type: string
+        data:
+          type: object
+        dataVersion:
+          type: string
+        metadataVersion:
+          type: string
