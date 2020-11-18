@@ -23,7 +23,7 @@ namespace DFC.EventStore.Function
 
         [FunctionName("Execute")]
         public async Task Run
-           ([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Execute")] HttpRequest req,
+           ([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Execute")] HttpRequest req,
             ILogger log)
         {
             try
