@@ -96,7 +96,6 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
 
             ms.Position = 0;
 
-
             var request = new DefaultHttpRequest(new DefaultHttpContext())
             {
                 Body = ms
