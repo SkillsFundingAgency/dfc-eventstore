@@ -1,6 +1,6 @@
 ﻿openapi: 3.0.1
 info:
-  title: Event Store API
+  title: __apiName__
   description: 'Stores an Event Grid API Message'
   version: 1.0.0
 servers:
