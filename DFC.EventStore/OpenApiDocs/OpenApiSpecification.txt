@@ -9,7 +9,7 @@ tags:
 - name: Event Store
   description: Stores an Event Grid Event to Cosmos DB
 paths:
-  /api/Execute/:
+  /api/Execute:
     post:
       tags:
       - Content
