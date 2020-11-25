@@ -9,6 +9,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace DFC.EventStore.Function
 {
@@ -22,7 +24,7 @@ namespace DFC.EventStore.Function
         }
 
         [FunctionName("Execute")]
-        public async Task Run
+        public async Task<IActionResult> Run
            ([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Execute")] HttpRequest req,
             ILogger log)
         {
@@ -43,7 +45,11 @@ namespace DFC.EventStore.Function
 
                     eventGridEvent.PartitionKey = eventGridEvent.EventType;
                     await _eventstoreRepository.UpsertAsync(eventGridEvent);
+
+                    return new StatusCodeResult((int)HttpStatusCode.Created);
                 }
+
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
 
             catch (Exception e)
