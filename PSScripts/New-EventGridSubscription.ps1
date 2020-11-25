@@ -32,7 +32,7 @@ param(
 
 New-AzEventGridSubscription `
     -EventSubscriptionName  $EventGridSubscriptionName `
-    -ResourceGroupName $ $TopicResourceGroup `
+    -ResourceGroupName $TopicResourceGroup `
     -TopicName $Topic `
     -EndpointType 'webhook' `
     -Endpoint  $SubscriptionEndPoint `
