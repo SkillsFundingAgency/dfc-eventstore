@@ -39,7 +39,7 @@ try {
 
     $api = Get-AzApiManagementApi -Context $context -Name $ApiNames
     
-    $apiOperations = Get-AzApiManagementOperation -Context $context -ApiId $APIId
+    $apiOperations = Get-AzApiManagementOperation -Context $context -ApiId $api.ApiId
     
     $apiOperationNames = $apiOperations.Name
     
