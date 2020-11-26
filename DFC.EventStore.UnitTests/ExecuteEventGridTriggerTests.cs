@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
@@ -89,7 +90,7 @@ namespace DFC.ServiceTaxonomy.ApiFunction.Tests
             var ms = new MemoryStream();
             var sw = new StreamWriter(ms);
 
-            var json = JsonConvert.SerializeObject(eventStoreModel);
+            var json = JsonConvert.SerializeObject(eventStoreModel != null ?  new List<EventStoreModel> { eventStoreModel } : null);
 
             sw.Write(json);
             sw.Flush();
