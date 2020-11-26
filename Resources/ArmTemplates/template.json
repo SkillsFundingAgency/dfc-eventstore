@@ -48,6 +48,21 @@
         },
         "eventstoreDatabaseThroughput": {
             "type": "int"
+        },
+        "ApimResourceGroup": {
+            "type": "string"
+        },
+        "ApimLoggerName": {
+            "type": "string"
+        },
+        "ApimProductInstanceName": {
+            "type": "string"
+        },
+        "ApimServiceName": {
+            "type": "string"
+        },
+        "ApiName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -57,11 +72,40 @@
         "cosmosDbCollectionPartitionKey": "/PartitionKey",
         "cosmosDbDatabaseName": "dfc-eventstore",
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
+        "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-       "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
     },
     "resources": [
+        {
+            "name": "[variables('ApiName')]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('ApimResourceGroup')]",
+            "apiVersion": "2017-05-10",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimLoggerName": {
+                        "value": "[parameters('ApimLoggerName')]"
+                    },
+                    "apimProductInstanceName": {
+                        "value": "[parameters('ApimProductInstanceName')]"
+                    },
+                    "apimServiceName": {
+                        "value": "[parameters('ApimServiceName')]"
+                    },
+                    "apiName": {
+                        "value": "[variables('ApiName')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "[variables('appServicePlanName')]",
