@@ -9,6 +9,9 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Collections.Generic;
 
 namespace DFC.EventStore.Function
 {
@@ -22,7 +25,7 @@ namespace DFC.EventStore.Function
         }
 
         [FunctionName("Execute")]
-        public async Task Run
+        public async Task<IActionResult> Run
            ([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Execute")] HttpRequest req,
             ILogger log)
         {
@@ -30,20 +33,27 @@ namespace DFC.EventStore.Function
             {
                 var content = await new StreamReader(req.Body).ReadToEndAsync();
 
-                var eventGridEvent = JsonConvert.DeserializeObject<EventStoreModel>(content);
+                var eventGridEvents = JsonConvert.DeserializeObject<IEnumerable<EventStoreModel>>(content);
 
-                if (eventGridEvent != null)
+                if (eventGridEvents != null)
                 {
                     if (Activity.Current == null)
                     {
                         Activity.Current = new Activity("EventStoreExecute").Start();
                     }
 
-                    log.LogInformation($"Request received: {eventGridEvent}");
+                    foreach (var eventGridEvent in eventGridEvents)
+                    {
+                        log.LogInformation($"Request received: {eventGridEvent}");
 
-                    eventGridEvent.PartitionKey = eventGridEvent.EventType;
-                    await _eventstoreRepository.UpsertAsync(eventGridEvent);
+                        eventGridEvent.PartitionKey = eventGridEvent.EventType;
+                        await _eventstoreRepository.UpsertAsync(eventGridEvent);
+                    }
+
+                    return new StatusCodeResult((int)HttpStatusCode.Created);
                 }
+
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
 
             catch (Exception e)
