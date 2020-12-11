@@ -3,9 +3,15 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using DFC.App.EventStore.Data.Models;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using DFC.Compui.Cosmos.Contracts;
 using System.Diagnostics;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Collections.Generic;
 
 namespace DFC.EventStore.Function
 {
@@ -19,23 +25,35 @@ namespace DFC.EventStore.Function
         }
 
         [FunctionName("Execute")]
-        public async Task Run
-           ([EventGridTrigger] EventStoreModel eventGridEvent, ILogger log)
+        public async Task<IActionResult> Run
+           ([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Execute")] HttpRequest req,
+            ILogger log)
         {
             try
             {
-                if (eventGridEvent != null)
+                var content = await new StreamReader(req.Body).ReadToEndAsync();
+
+                var eventGridEvents = JsonConvert.DeserializeObject<IEnumerable<EventStoreModel>>(content);
+
+                if (eventGridEvents != null)
                 {
-                    if(Activity.Current == null)
+                    if (Activity.Current == null)
                     {
                         Activity.Current = new Activity("EventStoreExecute").Start();
                     }
 
-                    log.LogInformation($"Request received: {eventGridEvent}");
+                    foreach (var eventGridEvent in eventGridEvents)
+                    {
+                        log.LogInformation($"Request received: {eventGridEvent}");
 
-                    eventGridEvent.PartitionKey = eventGridEvent.EventType;
-                    await _eventstoreRepository.UpsertAsync(eventGridEvent);
+                        eventGridEvent.PartitionKey = eventGridEvent.EventType;
+                        await _eventstoreRepository.UpsertAsync(eventGridEvent);
+                    }
+
+                    return new StatusCodeResult((int)HttpStatusCode.Created);
                 }
+
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
 
             catch (Exception e)
