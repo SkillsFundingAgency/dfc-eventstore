@@ -2,6 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "appInsightsInstrumentationKey":{
+            "type": "string"
+        },
         "appSharedResourceGroup": {
             "type": "string"
         },
@@ -75,7 +78,8 @@
         "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
         "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+        //"functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+        "FunctionAppInsightInstrumentationKey":"[parameters('appInsightsInstrumentationKey')]"
     },
     "resources": [
         {
@@ -140,26 +144,6 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "[variables('functionAppInsightsName')]",
-            "type": "Microsoft.Resources/deployments",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "appInsightsName": {
-                        "value": "[variables('functionAppInsightsName')]"
-                    },
-                    "attachedService": {
-                        "value": ""
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "2017-05-10",
             "name": "[variables('functionAppName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -207,7 +191,7 @@
                             },
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
+                                 "value": "[variables('FunctionAppInsightInstrumentationKey')]"
                             },
                             {
                                 "name": "AzureWebJobsStorage",
@@ -242,8 +226,7 @@
                 }
             },
             "dependsOn": [
-                "[variables('appServicePlanName')]",
-                "[variables('functionAppInsightsName')]"
+                "[variables('appServicePlanName')]"
             ]
         },
         {
