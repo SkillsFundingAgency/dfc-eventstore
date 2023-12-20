@@ -52,6 +52,12 @@
         },
         "ApiName": {
             "value": "pages"
+        },
+        "workspaceName": {
+            "value": "aTestLogAnalyticsAccount"
+        },
+        "workspaceResourceGroup": {
+            "value": "aResourceGroup"
         }
     }
 }
