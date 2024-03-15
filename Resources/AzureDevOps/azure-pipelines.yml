@@ -64,4 +64,3 @@ stages:
           BuildConfiguration: $(BuildConfiguration)
           PublishWebApp: true
           TestSuffix: UnitTests
-          DotNetCoreVersion: 6.x
