@@ -8,21 +8,11 @@
         "appSharedStorageAccountName": {
             "type": "string"
         },
-        "aseHostingEnvironmentName": {
+        "appServicePlanSuffix": {
             "type": "string",
             "defaultValue": ""
         },
-        "aseResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "aspInstances": {
-            "type": "int"
-        },
-        "aspSize": {
-            "type": "string"
-        },
-        "aspTier": {
+        "functionAppName": {
             "type": "string"
         },
         "CosmosDbResourceGroup": {
@@ -72,7 +62,7 @@
         }
     },
     "variables": {
-        "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
+        "appServicePlanName": "[concat(variables('resourcePrefix'), parameters('appServicePlanSuffix'), '-asp')]",
         "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
         "cosmosDbCollectionPartitionKey": "/PartitionKey",
@@ -80,8 +70,7 @@
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-eventstore'))]",
-        "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
-        "functionAppInsightsName": "[concat(variables('functionAppName'), '-ai')]"
+        "functionAppInsightsName": "[concat(parameters('functionAppName'), '-ai')]"
     },
     "resources": [
         {
@@ -140,7 +129,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "[variables('functionAppName')]",
+            "name": "[parameters('functionAppName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -150,7 +139,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('functionAppName')]"
+                        "value": "[parameters('functionAppName')]"
                     },
                     "appServicePlanName": {
                         "value": "[variables('appServicePlanName')]"

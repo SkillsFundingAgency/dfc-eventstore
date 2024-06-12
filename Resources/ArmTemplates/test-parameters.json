@@ -8,6 +8,12 @@
         "appSharedStorageAccountName": {
             "value": "dfcdevappsharedstr"
         },
+        "appServicePlanSuffix": {
+            "value": "-migrated"
+        },
+        "functionAppName": {
+            "value": "dfc-foo-app-eventstore-ver"
+        },
         "cosmosDBName": {
             "value": "dfc-dev-app-sharedresources-cdb"
         },
@@ -16,15 +22,6 @@
         },
         "Environment": {
             "value": "FOO"
-        },
-        "aspInstances": {
-            "value": 1
-        },
-        "aspTier": {
-            "value": "Standard"
-        },
-        "aspSize": {
-            "value": "2"
         },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
